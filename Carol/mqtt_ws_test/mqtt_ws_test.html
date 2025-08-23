@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>MQTT WebSocket 接続テスト</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 1em;
+    }
+    .result {
+      margin-top: 1em;
+      padding: 0.5em;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>MQTT over WebSocket 接続テスト</h1>
+  <p>各候補アドレスへの接続結果を下に表示します。</p>
+  <div id="results" class="result"></div>
+
+  <script>
+    const urls = [
+      'ws://broker.emqx.io:8083/mqtt',
+      'wss://broker.emqx.io:8084/mqtt',
+      'wss://test.mosquitto.org:8081/mqtt',
+      'ws://broker.hivemq.com:8000/mqtt',
+      'wss://broker.hivemq.com:8884/mqtt'
+    ];
+
+    const resultsDiv = document.getElementById('results');
+
+    urls.forEach(url => {
+      const client = mqtt.connect(url, {
+        connectTimeout: 5000,
+        reconnectPeriod: 0  // 再接続しない
+      });
+
+      const log = (msg, color = 'black') => {
+        const p = document.createElement('p');
+        p.style.color = color;
+        p.textContent = msg;
+        resultsDiv.appendChild(p);
+      };
+
+      client.on('connect', () => {
+        log(`[OK] 接続成功: ${url}`, 'green');
+        client.end();
+      });
+
+      client.on('error', err => {
+        log(`[ERR] 接続失敗: ${url} - ${err.message}`, 'red');
+      });
+    });
+  </script>
+</body>
+</html>
