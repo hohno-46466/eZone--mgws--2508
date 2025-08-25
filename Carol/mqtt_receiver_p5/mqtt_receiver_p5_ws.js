@@ -15,24 +15,37 @@ const POTmin = new Array(Ngauges).fill(0);
 const POTmax = new Array(Ngauges).fill(256);
 
 // ---- MQTT settings ----
-const brokerURL = 'wss://test.mosquitto.org:8081/mqtt';
-// const brokerURL = 'wss://localhost:9001';
+// const brokerURL = 'wss://test.mosquitto.org:8081/mqtt';
+// const brokerURL = 'wss://broker.hivemq.com:8884/mqtt';
+// const brokerURL = 'wss://broker.emqx.io:8084/mqtt';
+const brokerURL = 'ws://localhost:9001';
+
+// const topic = 'mgws25Q2-S999/pseudoBob1';
 const topic = 'mgws25Q2-S999/pseudoBob2';
+
 let client = null;
 
+// ---- function startMQTT() ----
 function startMQTT() {
   if (client) return; // already started
   client = mqtt.connect(brokerURL);
 
+  // on connect...
   client.on('connect', () => {
     console.log('✅ MQTT connected:', brokerURL);
     const log = document.getElementById('messageLog');
     if (log) log.innerText = '✅ 接続成功';
+
+    // トピックとブローカを現在の値で更新する
+    document.getElementById("mqtt_topic").innerText  = topic; 
+    document.getElementById("mqtt_broker").innerText = brokerURL;
+
     client.subscribe(topic, (err) => {
       if (!err) console.log('Subscribed:', topic);
     });
   });
 
+  // on message...
   client.on('message', (_topic, message) => {
     let text = message.toString().replace(/\r/g, '').trim();
     const fields = text.split('\t');
@@ -60,10 +73,12 @@ function startMQTT() {
     }
   });
 
+  // on close...
   client.on('close', () => {
-    console.warn('⚠️ MQTT connection closed');
+    console.warn('⚠️  MQTT connection closed');
   });
 
+  // on error...
   client.on('error', (err) => {
     console.error('❌ MQTT error:', err && err.message ? err.message : err);
   });
