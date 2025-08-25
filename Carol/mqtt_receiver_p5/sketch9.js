@@ -2,7 +2,8 @@
 // sketch9.js (for the "gauge" demonstration)
 //
 // First version: 2025-03-17(Mon) 20:55 JST / 2025-03-17(Mon) 11:55 UTC
-// Last update: 2025-08-23(Sat) 09:46 JST / 2025-08-23(Sat) 00:46 UTC
+// Prev update: 2025-08-23(Sat) 09:46 JST / 2025-08-23(Sat) 00:46 UTC
+// Last update: 2025-08-26(Tue) 06:01 JST / 2025-08-25(Mon) 21:01 UTC
 //
 
 // ---------------------------------------------------------

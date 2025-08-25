@@ -1,6 +1,8 @@
 //
 // sketch6.js - Radar (Spider) Chart for Ngauges values (current snapshot)
 //
+// Last update: 2025-08-26(Tue) 06:01 JST / 2025-08-25(Mon) 21:01 UTC
+//
 // Expects globals: Ngauges, POTval[], POTmin[], POTmax[]
 // Render-only: defines p5.js setup() and draw() without MQTT logic.
 //

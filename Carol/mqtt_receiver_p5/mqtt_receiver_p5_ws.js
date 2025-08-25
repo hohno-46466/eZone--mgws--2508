@@ -4,14 +4,14 @@
 // Starts MQTT connection immediately on load.
 
 // ---- Globals shared with sketch9.js ----
-const Ngauges = 5;
+const Ngauges = 8;
 const POTval = new Array(Ngauges).fill(0);
 const POTmin = new Array(Ngauges).fill(0);
 const POTmax = new Array(Ngauges).fill(256);
 
 // ---- MQTT settings ----
 const brokerURL = 'ws://localhost:9001';
-const topic = 'mgws25Q2-S999/pseudoBob1';
+const topic = 'mgws25Q2-S999/pseudoBob2';
 let client = null;
 
 function startMQTT() {
