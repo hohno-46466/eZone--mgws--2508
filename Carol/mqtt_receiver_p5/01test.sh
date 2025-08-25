@@ -1,6 +1,9 @@
 #!/bin/sh
 
-while [ 1 ]; do echo; sleep 0.2; done |
+MQTT_BROKER=localhost
+MQTT_BROKER=test.mosquitto.org
+
+while [ 1 ]; do echo; sleep 0.5; done |
 awk '
   BEGIN{N=36; p=2*3.141592/N}
   {
@@ -16,5 +19,5 @@ awk '
       c*sin(p*(x+7)),a,b;
     fflush();
   }' |
-mosquitto_pub -l -t mgws25Q2-S999/pseudoBob2 -h localhost
+mosquitto_pub -l -t mgws25Q2-S999/pseudoBob2 -h $MQTT_BROKER
 

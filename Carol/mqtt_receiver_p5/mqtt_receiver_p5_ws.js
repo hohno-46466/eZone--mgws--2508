@@ -1,7 +1,12 @@
+//
 // mqtt_receiver_p5_ws.js
+//
+// Last update: 2025-08-26(Tue) 06:06 JST / 2025-08-25(Mon) 21:06 UTC
+//
 // Purpose: MQTT over WebSocket receiver ONLY (no p5.js setup/draw here).
 // Exposes Ngauges, POTval, POTmin, POTmax as globals for sketch9.js to render.
 // Starts MQTT connection immediately on load.
+//
 
 // ---- Globals shared with sketch9.js ----
 const Ngauges = 8;
@@ -10,7 +15,8 @@ const POTmin = new Array(Ngauges).fill(0);
 const POTmax = new Array(Ngauges).fill(256);
 
 // ---- MQTT settings ----
-const brokerURL = 'ws://localhost:9001';
+const brokerURL = 'wss://test.mosquitto.org:8081/mqtt';
+// const brokerURL = 'wss://localhost:9001';
 const topic = 'mgws25Q2-S999/pseudoBob2';
 let client = null;
 
@@ -23,7 +29,7 @@ function startMQTT() {
     const log = document.getElementById('messageLog');
     if (log) log.innerText = '✅ 接続成功';
     client.subscribe(topic, (err) => {
-      if (!err) console.log('📡 Subscribed:', topic);
+      if (!err) console.log('Subscribed:', topic);
     });
   });
 
@@ -31,7 +37,7 @@ function startMQTT() {
     let text = message.toString().replace(/\r/g, '').trim();
     const fields = text.split('\t');
     const log = document.getElementById('messageLog');
-    if (log) log.innerText = `📨 ${_topic}: ${text}`;
+    if (log) log.innerText = `${_topic}: ${text}`;
 
     for (let i = 0; i < Ngauges && i < fields.length; i++) {
       const parts = fields[i].split('/');

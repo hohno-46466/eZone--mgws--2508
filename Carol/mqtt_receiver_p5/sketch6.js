@@ -1,5 +1,5 @@
 //
-// sketch6.js - Radar (Spider) Chart for Ngauges values (current snapshot)
+// sketch6.js - Radar (Spider) Chart for Ngauges values
 //
 // Last update: 2025-08-26(Tue) 06:01 JST / 2025-08-25(Mon) 21:01 UTC
 //

@@ -1,5 +1,5 @@
 //
-// sketch8d.js - 発散型棒グラフ（0 を基準の水平線）+ 色覚多様性パレット + タイトル余白
+// sketch8d.js - 棒グラフ（0 を基準の水平線）+ 色覚多様性パレット + タイトル余白
 //
 // Prev update: 2025-08-25(Mon) 21:43 JST / 2025-08-25(Mon) 12:43 UTC
 // Last update: 2025-08-26(Tue) 06:01 JST / 2025-08-25(Mon) 21:01 UTC
@@ -129,5 +129,5 @@ function drawDivergingBarsFixedBaseline() {
   fill(0);
   textAlign(LEFT, TOP);
   textSize(14);
-  text("発散型棒グラフ（基準線=0）— Okabe–Ito パレット", 12, 4);
+  text("棒グラフ（基準線=0）— Okabe–Ito パレット", 12, 4);
 }
