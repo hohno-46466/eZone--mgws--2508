@@ -50,7 +50,8 @@ function startMQTT() {
     let text = message.toString().replace(/\r/g, '').trim();
     const fields = text.split('\t');
     const log = document.getElementById('messageLog');
-    if (log) log.innerText = `${_topic}: ${text}`;
+    // if (log) log.innerText = `${_topic}: ${text}`;
+    if (log) log.innerText = `Message: ${text}`;
 
     for (let i = 0; i < Ngauges && i < fields.length; i++) {
       const parts = fields[i].split('/');
