@@ -1,3 +1,10 @@
+<!--
+
+index.html
+
+Last update: 2025-08-28(Thu) 10:20 JST / 2025-08-28(Thu) 01:20 UTC
+
+-->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,23 +13,19 @@
   <link rel="stylesheet" href="mqtt_receiver_p5.css">
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <script src="sketch_selector.js"></script>
   <!-- MQTT 受信専用（描画は含まない） -->
   <script src="mqtt_receiver_p5_ws-2.js" defer></script>
-  <style>
-    main { max-width: 900px; margin: 20px auto; padding: 0 12px; }
-    .row { margin: 12px 0; }
-    label { margin-right: 8px; }
-  </style>
 </head>
 <body>
   <main>
-    <h2>MQTT メッセージ受信（TSV形式の数値 + 拡張書式 → sketch.js によるデータ描画）</h2>
-    <p class="row">MQTT トピック: <code id="mqtt_topic">mgws25Q2-S999/pseudoBob2</code></p>
-    <p class="row">MQTT ブローカ: <code id="mqtt_broker">ws://localhost:9001</code></p>
-    <div id="messageLog" class="row">接続準備中...</div>
+    <h2>MQTT メッセージ受信</h2>
+    <h3>概要：TSV形式の数値(拡張書式)を受信 → sketch.js によるデータ描画</h3>
+    <p class="row">MQTTトピック： <code id="mqtt_topic">mgws25Q2-S999/pseudoBob2</code></p>
+    <p class="row">MQTTブローカ： <code id="mqtt_broker">ws://localhost:9001</code></p>
+    <p class="row"><code id="messageLog">接続準備中...</code></p>
     <br>
-
-    <!-- ▼ プルダウンで描画スタイルを切り替える -->
+    <!-- ▼ プルダウンで描画スタイルを切り替える See also: sketch_selector.js -->
     <div class="row">
       <label for="sketchSelect">描画スタイルを選択: </label>
       <select id="sketchSelect">
@@ -33,66 +36,5 @@
       </select>
     </div>
   </main>
-<script>
-  const selectEl = document.getElementById('sketchSelect');
-
-  function cleanupP5Globals() {
-    const fns = [
-      'preload','setup','draw','remove',
-      'windowResized','mousePressed','mouseReleased','mouseMoved','mouseDragged',
-      'keyPressed','keyReleased','touchStarted','touchMoved','touchEnded'
-    ];
-    for (const k of fns) {
-      if (typeof window[k] === 'function') {
-        try { delete window[k]; } catch (_) { window[k] = undefined; }
-      }
-    }
-    try { delete window._setupDone; } catch(_) {}
-  }
-
-  function loadSketch(file) {
-    if (typeof window.remove === 'function') {
-      try { window.remove(); } catch (e) { console.warn('p5 remove() failed:', e); }
-    }
-    const old = document.getElementById('dynamicSketch');
-    if (old) old.remove();
-    cleanupP5Globals();
-
-    const s = document.createElement('script');
-    s.id = 'dynamicSketch';
-    s.src = file + '?v=' + Date.now();   // キャッシュ回避
-    s.onload = () => {
-      // 必要なら MQTT 再接続もここで
-      // if (window.MQTTControl?.restartMQTT) window.MQTTControl.restartMQTT();
-    };
-    document.body.appendChild(s);
-  }
-
-  selectEl.addEventListener('change', function () {
-    // 選択内容を保存してからページをリロード
-    localStorage.setItem('selectedSketch', this.value);
-    // キャッシュ回避のため、クエリにも載せておく（任意）
-    const url = new URL(location.href);
-    url.searchParams.set('sketch', this.value);
-    location.href = url.toString();
-  });
-
-  window.addEventListener('DOMContentLoaded', () => {
-    // URLの ?sketch= または localStorage の値を優先
-    const urlSketch = new URL(location.href).searchParams.get('sketch');
-    const saved = urlSketch || localStorage.getItem('selectedSketch');
-    if (saved) {
-      // セレクタ表示を合わせる
-      const opt = Array.from(selectEl.options).find(o => o.value === saved);
-      if (opt) selectEl.value = saved;
-      // 目的のスケッチだけを読み込む
-      loadSketch(saved);
-    } else {
-      // 既定の選択で読み込む
-      loadSketch(selectEl.value);
-    }
-  });
-</script>
-
 </body>
 </html>
