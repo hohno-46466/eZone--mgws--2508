@@ -5,7 +5,7 @@
 # MQTT_BROKER=broker.emqx.io
 MQTT_BROKER=localhost
 
-while [ 1 ]; do echo; sleep 0.5; done |
+while [ 1 ]; do echo; sleep 0.2; done |
 awk '
   BEGIN{N=36; p=2*3.141592/N}
   {
